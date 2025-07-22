@@ -33,7 +33,7 @@ export interface CreateNoteParams {
 
 export interface DeleteNoteResponse {
   message: string;
-  deletedNoteId: string;
+  deletedNoteId: number;
 }
 
 export const fetchNotes = async ({
@@ -59,7 +59,7 @@ export const createNote = async (noteData: CreateNoteParams): Promise<Note> => {
   return response.data;
 };
 
-export const deleteNote = async (id: string): Promise<DeleteNoteResponse> => {
+export const deleteNote = async (id: number): Promise<DeleteNoteResponse> => {
   const response = await axiosInstance.delete<DeleteNoteResponse>(`/${id}`);
   return response.data;
 };

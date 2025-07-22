@@ -41,7 +41,7 @@ export default function App() {
     placeholderData: keepPreviousData,
   });
 
-  const deleteMutation = useMutation<DeleteNoteResponse, Error, string>({
+  const deleteMutation = useMutation<DeleteNoteResponse, Error, number>({
     mutationFn: deleteNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
@@ -60,7 +60,7 @@ export default function App() {
     },
   });
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: number) => {
     deleteMutation.mutate(id);
   };
 
@@ -81,7 +81,10 @@ export default function App() {
     { resetForm }: { resetForm: () => void }
   ) => {
     createMutation.mutate(values, {
-      onSuccess: () => resetForm(),
+      onSuccess: () => {
+        resetForm();
+        closeModal();
+      },
     });
   };
 
@@ -110,13 +113,15 @@ export default function App() {
         <NoteList notes={data.notes} onDelete={handleDelete} />
       )}
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <NoteForm
-          initialValues={{ title: "", content: "", tag: "Todo" }}
-          onSubmit={handleCreateNote}
-          onCancel={closeModal}
-        />
-      </Modal>
+      {isModalOpen && (
+        <Modal isOpen={true} onClose={closeModal}>
+          <NoteForm
+            initialValues={{ title: "", content: "", tag: "Todo" }}
+            onSubmit={handleCreateNote}
+            onCancel={closeModal}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

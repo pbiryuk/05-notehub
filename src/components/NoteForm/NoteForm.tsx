@@ -1,7 +1,11 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage as FormikErrorMessage,
+} from "formik";
 import * as Yup from "yup";
 import css from "./NoteForm.module.css";
-import type { FormikHelpers } from "formik";
 import type { NoteTag } from "../../types/note";
 
 interface NoteFormValues {
@@ -14,7 +18,7 @@ interface NoteFormProps {
   initialValues: NoteFormValues;
   onSubmit: (
     values: NoteFormValues,
-    helpers: FormikHelpers<NoteFormValues>
+    formikHelpers: { resetForm: () => void }
   ) => void;
   onCancel: () => void;
 }
@@ -39,14 +43,20 @@ export default function NoteForm({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      onSubmit={(values, actions) => {
+        onSubmit(values, actions);
+      }}
     >
       {({ isSubmitting, isValid }) => (
         <Form className={css.form} noValidate>
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
             <Field id="title" name="title" type="text" className={css.input} />
-            <ErrorMessage name="title" component="span" className={css.error} />
+            <FormikErrorMessage
+              name="title"
+              component="span"
+              className={css.error}
+            />
           </div>
 
           <div className={css.formGroup}>
@@ -58,7 +68,7 @@ export default function NoteForm({
               rows={8}
               className={css.textarea}
             />
-            <ErrorMessage
+            <FormikErrorMessage
               name="content"
               component="span"
               className={css.error}
@@ -74,7 +84,11 @@ export default function NoteForm({
               <option value="Meeting">Meeting</option>
               <option value="Shopping">Shopping</option>
             </Field>
-            <ErrorMessage name="tag" component="span" className={css.error} />
+            <FormikErrorMessage
+              name="tag"
+              component="span"
+              className={css.error}
+            />
           </div>
 
           <div className={css.actions}>
@@ -90,7 +104,7 @@ export default function NoteForm({
               className={css.submitButton}
               disabled={!isValid || isSubmitting}
             >
-              Create note
+              {isSubmitting ? "Creating..." : "Create note"}
             </button>
           </div>
         </Form>
