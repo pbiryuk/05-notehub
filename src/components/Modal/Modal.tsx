@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import css from "./Modal.module.css";
 
@@ -10,7 +10,7 @@ interface ModalProps {
 
 const modalRoot = document.getElementById("modal-root") || document.body;
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+export default function Modal({ isOpen, onClose, children }: ModalProps) {
   useEffect(() => {
     if (!isOpen) return;
 
@@ -48,6 +48,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     </div>,
     modalRoot
   );
-};
-
-export default Modal;
+}

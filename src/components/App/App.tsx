@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   useQuery,
   useMutation,
@@ -25,7 +25,7 @@ interface NotesResponse {
   totalPages: number;
 }
 
-const App: React.FC = () => {
+export default function App() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -119,6 +119,4 @@ const App: React.FC = () => {
       </Modal>
     </div>
   );
-};
-
-export default App;
+}

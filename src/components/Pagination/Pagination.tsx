@@ -1,4 +1,3 @@
-import React from "react";
 import ReactPaginate from "react-paginate";
 import css from "./Pagination.module.css";
 
@@ -8,11 +7,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-}) => {
+}: PaginationProps) {
   if (totalPages <= 1) return null;
 
   const handlePageClick = (data: { selected: number }) => {
@@ -33,6 +32,4 @@ const Pagination: React.FC<PaginationProps> = ({
       disabledClassName={css.disabled}
     />
   );
-};
-
-export default Pagination;
+}
